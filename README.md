@@ -32,4 +32,4 @@ There is an example `./example.sh` that runs `obsidian` program and sets the exe
 
 * Add multiple hotkeys
 
-* It's not well-tested with different programs, so, there could be some issues. The problem is in window identification after running the program because we cannot simply get the X11 window by PID (I tried to use `_NET_WM_PID` window property for identification, but it's unstable). Now it was solved by waiting for active window to change
+* It's not well-tested with different programs, so, there could be some issues. There is the problem in window identification after running a program because we cannot simply get the X11 window by PID (I tried to use `_NET_WM_PID` window property for identification, but it's unstable). Now it was solved by waiting for active window to change
