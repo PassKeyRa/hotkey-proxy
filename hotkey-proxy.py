@@ -72,7 +72,9 @@ class KeysProxy:
             return
         keycode = event.detail
         modifiers = event.state
-        if keycode == self.key and modifiers == self.modifier:
+        if keycode == self.key:
+            if self.modifier != X.AnyModifier and self.modifier != modifiers:
+                return
             self.run_cmd()
             self.d.send_event(self.window, event, propagate=True)
             self.d.sync()
@@ -94,7 +96,7 @@ def process_run_and_monitor(cmd):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--key', '-k', required=True, help='Key to capture (examples: S, M, etc.)')
-    parser.add_argument('--modifier', '-m', required=True, help='Modifier to capture (examples: shift, ctrl, alt)')
+    parser.add_argument('--modifier', '-m', default='any', help='Modifier to capture (examples: shift, ctrl, alt, any, none)')
     parser.add_argument('--cmd', '-c', required=True, help='Shell command to run on captured key')
     parser.add_argument('program', help='Program to run')
     args = parser.parse_args()
@@ -107,6 +109,10 @@ def main():
         modifier = X.AltMask
     elif args.modifier.lower() == 'ctrl':
         modifier = X.ControlMask
+    elif args.modifier.lower() == 'any':
+        modifier = X.AnyModifier
+    elif args.modifier.lower() == 'none':
+        modifier = 0
     else:
         raise Exception('Modifier can be one of the following values only: shift, ctrl, alt')
     cmd = args.cmd
